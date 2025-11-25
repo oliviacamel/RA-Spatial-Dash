@@ -1,0 +1,9 @@
+dash==3.3.0
+plotly==6.4.0
+plotly-cloud==0.1.0
+numpy==2.3.3
+pickleshare==0.7.5
+pandas==2.3.3
+colorcet==3.1.0
+cmake==4.2.0
+fastparquet==2024.11.0

@@ -74,7 +74,7 @@ app.layout = html.Div([
     ], style={'display': 'flex', 'justifyContent': 'space-between'}),
     # Bottom row: Heatmap subplots
     html.Div([
-        html.H3("Top Features per Selected Cluster", style={'textAlign': 'center', 'marginTop': '40px'}),
+        html.H3("Top Features per Selected Cluster", style={'textAlign': 'center', 'marginTop': '20px'}),
         #html.P("Heatmaps automatically generated for selected clusters", 
         #       style={'textAlign': 'center', 'color': 'gray'}),
         dcc.Graph(id='cluster-heatmap', style={'height': '60vh'})
@@ -161,7 +161,7 @@ def update_celltype_scatter(selected_clusters):
         )
     
     fig.update_layout(
-        height=700,
+        height=800,
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         hovermode='closest',
@@ -207,7 +207,7 @@ def update_heatmap(selected_clusters):
         cols=n_clusters,
         subplot_titles=[f'Cluster {c}' for c in selected_clusters],
         horizontal_spacing=0.15 / n_clusters if n_clusters > 1 else 0.1,
-        vertical_spacing= 0.1,
+        vertical_spacing= 0.2,
         specs=[[{'type': 'heatmap'} for _ in range(n_clusters)] for _ in range(2)]
     )
     
@@ -234,10 +234,10 @@ def update_heatmap(selected_clusters):
                 zmax= vmax,
                 
                 colorbar=dict(
-                    len=0.1,  # Height of colorbar
-                    y=-0.15,   # Position in subplot (0-1 from bottom to top)
+                    len=0.1, 
+                    y=-0.15,  
                     yanchor='middle',
-                    x=0.2 + (idx * 0.8/n_clusters),   # Position to the right of subplot
+                    x=0.2 + (idx * 0.8/n_clusters),  
                     xanchor='left',
                     orientation = 'h',
                     thickness=10
@@ -257,11 +257,11 @@ def update_heatmap(selected_clusters):
                 zmin= vmin,
                 zmax= vmax,
                 colorbar=dict(
-                    len=0.1,  # Height of colorbar
-                    y=-0.15,   # Position in subplot (0-1 from bottom to top)
+                    len=0.1,  
+                    y=-0.15,   
                     yanchor='middle',
                     x=0.2 + (idx * 0.8/n_clusters),
-                    orientation = 'h', # Position to the right of subplot
+                    orientation = 'h',
                     xanchor='left',
                     thickness=10
                 ),
@@ -274,27 +274,28 @@ def update_heatmap(selected_clusters):
         
         # Update x-axis for this subplot
         fig.update_xaxes(
-            tickangle=-45,
+            tickangle=0,
             row=1,
             col=idx + 1
         )
         
         # Update y-axis
         fig.update_xaxes(
-            showticklabels=False,
+            showticklabels=True,
+            tickangle=-45,
             row=2,
             col=idx+1
         )
         fig.update_yaxes(
         title_text="In Cluster",
-        showticklabels=False,
+        showticklabels=True,
         row=1,
         col=idx+1,
         title_standoff=10
     )
     fig.update_yaxes(
         title_text="Out Cluster",
-        showticklabels=False,
+        showticklabels=True,
         row=2,
         col=idx+1,
         title_standoff=10
@@ -313,4 +314,4 @@ def update_heatmap(selected_clusters):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,ssl_context="adhoc")
+    app.run(debug=True)
