@@ -91,7 +91,7 @@ def update_scatter(selected_feature):
 
     df_copy = df[[x_col, y_col, selected_feature]].copy()
     df_copy[selected_feature] = np.log2(df_copy[selected_feature] + 1e-10)  # Add small value to avoid log(0)
-    df_copy = df_copy[~np.isinf(df_copy[selected_feature])]
+    df_copy = df_copy[(~np.isinf(df_copy[selected_feature]))&(df_copy[selected_feature]>0)]
 
     # Create a new figure for this callback
     fig = go.Figure()
