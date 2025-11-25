@@ -7,27 +7,29 @@ import colorcet as cc
 import pickle
 import os
 import pandas as pd
+import psutil
+
 
 app = dash.Dash(__name__)
 server = app.server
 # Load the parquet file
-PARQUET_FILE = 'data/fRARCx3ERT2_all.csv.gz'
+PARQUET_FILE = 'dataParquet/fRARCx3ERT2_all/'
 CELLTYPE_FILE = 'data/leiden_membership.npy'
 CELLTYPE_FILE = np.load(CELLTYPE_FILE)
 CELLTYPECOLORS = cc.glasbey[:max(np.unique(CELLTYPE_FILE))+1]
 with open ('data/gene_marker.pkl','rb') as f :
     gene_markers = pickle.load(f)
 if os.path.exists(PARQUET_FILE):
-    df = pd.read_csv(f'{PARQUET_FILE}',index_col = 0)
+    df = pd.read_parquet(f'{PARQUET_FILE}')
+    #print(f"Memory usage: {psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2:.2f} MB")
+    #df = pd.read_csv(f'{PARQUET_FILE}',index_col = 0)
+    #print(f"Memory usage: {psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2:.2f} MB")
     x_col = 'x'
     y_col = 'y'
 
     # Get all numeric columns for the dropdown (excluding x and y)
-    feature_cols = [col for col in df.select_dtypes(include=['number']).columns
-                    if col not in [x_col, y_col,'min_x','min_y','max_x','max_y']]
-
-    if not feature_cols:
-        feature_cols = [col for col in df.columns if col not in [x_col, y_col]]
+    feature_cols = df.columns[6:].tolist()
+    #print(f"Memory usage: {psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2:.2f} MB")
 
 # App layout
 app.layout = html.Div([
@@ -310,6 +312,7 @@ def update_heatmap(selected_clusters):
     return fig
 
 if __name__ == '__main__':
+    #print(f"Memory usage: {psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2:.2f} MB")
     app.run()
 
     
