@@ -7,8 +7,6 @@ import colorcet as cc
 import pickle
 import os
 import pandas as pd
-import psutil
-
 
 app = dash.Dash(__name__)
 server = app.server
