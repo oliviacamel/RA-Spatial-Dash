@@ -9,7 +9,7 @@ import os
 import pandas as pd
 
 app = dash.Dash(__name__)
-
+server = app.server
 # Load the parquet file
 PARQUET_FILE = 'data/fRARCx3ERT2_all.csv.gz'
 CELLTYPE_FILE = 'data/leiden_membership.npy'
@@ -72,7 +72,7 @@ app.layout = html.Div([
     ], style={'display': 'flex', 'justifyContent': 'space-between'}),
     # Bottom row: Heatmap subplots
     html.Div([
-        html.H3("Top Features per Selected Cluster", style={'textAlign': 'center', 'marginTop': '20px'}),
+        html.H3("Top Features per Selected Cluster", style={'textAlign': 'center', 'marginTop': '40px'}),
         #html.P("Heatmaps automatically generated for selected clusters",
         #       style={'textAlign': 'center', 'color': 'gray'}),
         dcc.Graph(id='cluster-heatmap', style={'height': '60vh'})
@@ -308,5 +308,8 @@ def update_heatmap(selected_clusters):
         margin=dict(l=60, r=60, t=80, b=120)
     )
     return fig
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
+
+    
